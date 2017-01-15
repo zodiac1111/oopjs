@@ -1,18 +1,25 @@
+/*global console*/
+
+// ===========父类
 function Animal(args) {
-    var self = this;
-    var isLive = true;
+    "use strict";
+    var self = this,
+        isLive = true;
     self.who = args.name || "animal";
     console.log("create Animal");
-    self.run = function() {
+    self.run = function () {
         console.log("Animal run");
-    }
+    };
 }
 
 function foo() {
+    "use strict";
     console.log("foo");
 }
 
+//  方法1 构造的子类
 function Cat(args) {
+    "use strict";
     /// 私有属性
     var self = this;
     /// 公有属性
@@ -27,14 +34,15 @@ function Cat(args) {
     }(args));
 
     /// 公有方法
-    self.say = function() {
+    self.say = function () {
         self.name = "new name";
         console.log(" cat say" + self.name);
     };
 }
 
-/// 原型法
+/// 原型法 构造的子类
 function Dog(args) {
+    "use strict";
     var self = this;
     (function constructor() {
         self.name = args.name;
@@ -43,49 +51,42 @@ function Dog(args) {
         console.log("create new dog " + self.name);
     }(args));
 }
-
 Dog.prototype = Object.create(Animal.prototype);
 Dog.prototype.constructor = Dog;
+
 /// 实例公有属性
 Dog.prototype.pname = "dog pname";
 /// 实例公有方法
-Dog.prototype.say = function() {
+Dog.prototype.say = function () {
+    "use strict";
     this.name = "new name";
     console.log("dog say :" + this.name);
-}
+};
 
 
 /// ============ Douglas Crockford 有一个模式叫“Module Pattern”可以解决以上两个问题
 
-// 构造函数
+// 公有
 function Pig(args) {
+    "use strict";
+
+    var private_name2 = 2;
+    var self = this;
+    /// 公有方法
+    self.say = function () {
+        self.name = "new name";
+        console.log(" cat say" + self.name);
+    };
+}
+
+Pig.prototype = Object.create(Animal.prototype);
+Pig.prototype.constructor = function (args) {
+    "use strict";
     Animal.call(this, args);
     Object.create(Animal.prototype); //继承
-    console.log("create new pig:" + args.name);
+    console.log("create new pig:");
+};
 
-    private_name = 2;
-}
-Pig.prototype = function() {
-    // private variables
-    var private_name = "uname pig";
-
-    // private method
-    function jump() {
-        console.log("pig jump:");
-    }
-
-    // public
-    return {
-        // public variables
-        myname: private_name,
-        // public  method
-        say: function(args) {
-            myname = args || private_name;
-            console.log("dog say :" + myname);
-            console.log("dog say  private_name :" + private_name);
-        }
-    };
-}();
 
 
 var kitty = new Cat({ "name": "kitty" });
@@ -102,7 +103,14 @@ console.log("Dog.say: " + (hachikou.say === hachikou2.say)); /// true
 console.log(hachikou.pname);
 hachikou.pname = "hachikou2 pname";
 console.log(hachikou.pname);
-console.log(hachikou.pname == hachikou2.pname)
+console.log(hachikou.pname === hachikou2.pname);
+
+console.log("kitty instanceof Cat: " + (kitty instanceof Cat));
+console.log("kitty2 instanceof Cat: " + (kitty2 instanceof Cat));
+console.log("kitty instanceof Animal: " + (kitty instanceof Animal));
+console.log("hachikou instanceof Dog: " + (hachikou instanceof Dog));
+console.log("hachikou2 instanceof Dog: " + (hachikou2 instanceof Dog));
+console.log("hachikou instanceof Animal: " + (hachikou instanceof Animal));
 console.log("over");
 
 /**
