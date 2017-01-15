@@ -110,6 +110,8 @@ console.log("over");
  * http://javascript.crockford.com/zh/private.html 私有
  * https://www.zhihu.com/question/23588490 weakmap?
  * http://metaduck.com/08-module-pattern-inheritance.html
+ * 
+ * http://www.objectplayground.com/
  */
 
 
@@ -121,6 +123,6 @@ console.log("over");
  * 公有属性
  * 公有方法
  * (静态方法)
- * 继承
+ * 继承(单继承)
  * 构造函数（带参数）
  */
